@@ -1,11 +1,13 @@
-class JSControl {
+class rhinoJS {
   constructor() {
     this.data = {};
+    this.watchCallbacks = {};
   }
 
-  _splitProperty(prop) {
+  prepare(prop) {
     const objBase = this.data;
     const parts = prop.split(".");
+    var propKey = "";
 
     if (parts.length > 1) {
       let currentObj = this.data;
@@ -13,17 +15,21 @@ class JSControl {
       for (let i = 0; i < parts.length - 1; i++) {
         const part = parts[i];
         currentObj = currentObj[part];
+
+        propKey += part + ".";
       }
 
       return {
         objBase: currentObj,
         prop: parts[parts.length - 1],
+        propKey: propKey + parts[parts.length - 1],
       };
     }
 
     return {
       objBase,
       prop,
+      propKey: prop,
     };
   }
 
@@ -35,21 +41,33 @@ class JSControl {
     }
 
     props.forEach((prop) => {
-      const split = this._splitProperty(prop);
+      const prepare = this.prepare(prop);
+      const objBase = prepare.objBase;
+      const propKey = prepare.propKey;
+      prop = prepare.prop;
 
-      const objBase = split.objBase;
-      prop = split.prop;
       var value = objBase[prop];
+
+      if (!this.watchCallbacks[propKey]) {
+        this.watchCallbacks[propKey] = []; // Inicializa um array para os callbacks da prop
+      }
+
+      // Adiciona o callback ao array da propriedade
+      this.watchCallbacks[propKey].push(callback);
 
       Object.defineProperty(objBase, prop, {
         get: function () {
           return value;
         },
-        set: function (newValue) {
+        set: (newValue) => {
           if (newValue !== value) {
             let oldValue = value;
             value = newValue;
-            callback(newValue, oldValue);
+
+            // Chama todos os callbacks associados a esta propriedade
+            this.watchCallbacks[propKey].forEach((cb) => {
+              cb(newValue, oldValue);
+            });
           }
         },
       });
@@ -62,8 +80,6 @@ class JSControl {
     let element = document.querySelector(selector);
 
     let acao = (v) => {
-      console.log("[V]", v);
-
       // se tiver parâmetro de filtro, trata valor por ele antes
       if (filter) {
         v = filter(v);
@@ -84,7 +100,7 @@ class JSControl {
     });
 
     //executa ação pela primeira vez
-    const split = this._splitProperty(dataKey);
+    const split = this.prepare(dataKey);
     const objBase = split.objBase;
     dataKey = split.prop;
     acao(objBase[dataKey]);
@@ -92,7 +108,8 @@ class JSControl {
 
   reactModel(selector, prop) {
     //prepara campos multiniveis
-    const prepare = this._splitProperty(prop);
+    const propOriginal = prop;
+    const prepare = this.prepare(prop);
     prop = prepare.prop;
     let objBase = prepare.objBase;
 
@@ -100,25 +117,18 @@ class JSControl {
 
     if (elements.length > 1) {
       console.warn(
-        `[controlJS] reactModel > Mais de um elemento foi encontrado com o selector indicado e isso pode comprometer o funcionamento desse recurso.`,
+        `[rhinoJS] reactModel > Mais de um elemento foi encontrado com o selector indicado e isso pode comprometer o funcionamento desse recurso.`,
         selector,
         prop
       );
     }
 
     elements.forEach((element) => {
-
-        console.log('REGISTRANDO', element.id);
-
       element.addEventListener("input", (event) => {
         objBase[prop] = event.target.value;
-        console.log("[INPUT]", element, event.target.value);
       });
 
-
-
-      this.watch(prop, (newValue) => {
-        console.log("VALOR", newValue, element.id);
+      this.watch(propOriginal, (newValue) => {
         element.value = newValue;
       });
 
@@ -128,4 +138,4 @@ class JSControl {
   }
 }
 
-const $control = new JSControl();
+const $rhino = new JSControl();

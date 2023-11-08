@@ -42,9 +42,7 @@
       <div class="row">
         <form>
           <div class="mb-3">
-            <label for="email" class="form-label" 
-              >Email address</label
-            >
+            <label for="email" class="form-label">Email address</label>
             <input
               type="email"
               class="form-control campo-teste"
@@ -59,11 +57,7 @@
             <label for="exampleInputPassword1" class="form-label"
               >Password</label
             >
-            <input
-              type="text"
-              class="form-control campo-teste"
-              id="senha"
-            />
+            <input type="text" class="form-control campo-teste" id="senha" />
           </div>
           <div class="mb-3 form-check">
             <input
@@ -71,6 +65,20 @@
               class="form-check-input"
               id="exampleCheck1"
             />
+            <label class="form-check-label" for="exampleCheck1"
+              >Check me out</label
+            >
+          </div>          
+          
+          <div class="mb-3 form-check">
+          
+            <select class="form-select campo-teste" aria-label="Default select example">
+                <option selected>Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            
             <label class="form-check-label" for="exampleCheck1"
               >Check me out</label
             >
@@ -92,7 +100,7 @@
         },
       };
 
-      $control.reactModel('input.campo-teste', 'teste');
+      $control.reactModel("input.campo-teste", "filtros.empresaId");
     </script>
   </body>
 </html>
