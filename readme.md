@@ -20,7 +20,9 @@ Vamos começar instalando o script de JavaScript antes do fechamento da tag `</b
 
 Feito isso, você já terá disponível em todo o site o `$rhino` e os recursos disponíveis.
 
----
+## Exemplo
+
+Veja [um exemplo ao vivo](https://codepen.io/Tiago-Gon-alves-the-solid/pen/ExrWyMO) do rhinoJS sendo usado.
 
 
 ## Funcionalidades
