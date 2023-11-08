@@ -1,6 +1,6 @@
 
 # rhinoJS
-
+![alt text](https://github.com/tihhgoncalves/rhinoJS/blob/main/assets/images/logo.png?raw=true)
 Transformando qualquer site em uma experiência reativa, independentemente da linguagem de programação utilizada
 
 [![Versão mais recente](https://img.shields.io/github/release/tihhgoncalves/rhinoJS.svg?style=flat)]()
