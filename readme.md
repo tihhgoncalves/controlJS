@@ -2,7 +2,7 @@
 # rhinoJS
 ![alt text](https://raw.githubusercontent.com/tihhgoncalves/rhinoJS/develop/assets/images/logo.png)
 
-Transformando qualquer site em uma experiência reativa, independentemente da linguagem de programação utilizada
+🦏 RhinoJS - Web Reativa Simplificada! 🚀 Transforme qualquer site em uma experiência reativa com facilidade. Simplifique a criação de interfaces interativas e torne seus projetos web mais dinâmicos com RhinoJS. Transforme a web com simplicidade! 💻🌐
 
 [![Versão mais recente](https://img.shields.io/github/release/tihhgoncalves/rhinoJS.svg?style=flat)]()
 [![Último commit](https://img.shields.io/github/last-commit/tihhgoncalves/rhinoJS.svg?style=flat)]()
