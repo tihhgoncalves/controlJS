@@ -35,7 +35,7 @@
     <!-- ViewPort -->
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
-    <script src="http://projetos.localhost/controlJS/src/control.js"></script>
+    <script src="../src/rhino.js"></script>
   </head>
   <body>
     <div class="container m-5">
@@ -89,7 +89,7 @@
     </div>
 
     <script>
-      $control.data = {
+      $rhino.data = {
         teste: "123",
         filtros: {
           empresaId: null,
@@ -100,7 +100,7 @@
         },
       };
 
-      $control.reactModel("input.campo-teste", "filtros.empresaId");
+      $rhino.reactModel("input.campo-teste", "filtros.empresaId");
     </script>
   </body>
 </html>

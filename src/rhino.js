@@ -1,5 +1,6 @@
 class rhinoJS {
   constructor() {
+    this.version = "%VERSION%";
     this.data = {};
     this.watchCallbacks = {};
   }
@@ -138,4 +139,4 @@ class rhinoJS {
   }
 }
 
-const $rhino = new JSControl();
+const $rhino = new rhinoJS();

@@ -1,0 +1,29 @@
+{
+  "name": "rhinoJS",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/rhino.js",
+  "scripts": {
+    "build": "node build-script.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tihhgoncalves/rhinojs.git"
+  },
+  "keywords": [
+    "javascript",
+    "framework"
+  ],
+  "author": "Tihh Gonçalves <tihhgoncalves@gmail.com> (https://github.com/tihhgoncalves)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tihhgoncalves/rhinojs/issues"
+  },
+  "homepage": "https://github.com/tihhgoncalves/rhinojs#readme",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "private": false
+}
