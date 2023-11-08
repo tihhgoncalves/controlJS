@@ -10,6 +10,9 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/tihhgoncalves/rhinoJS.svg?style=flat)]()
 [![Licença MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/)
 
+## Exemplo
+
+Veja [um exemplo ao vivo](https://codepen.io/Tiago-Gon-alves-the-solid/pen/ExrWyMO) do rhinoJS sendo usado.
 
 ## Como usar
 
@@ -19,11 +22,6 @@ Vamos começar instalando o script de JavaScript antes do fechamento da tag `</b
 ```
 
 Feito isso, você já terá disponível em todo o site o `$rhino` e os recursos disponíveis.
-
-## Exemplo
-
-Veja [um exemplo ao vivo](https://codepen.io/Tiago-Gon-alves-the-solid/pen/ExrWyMO) do rhinoJS sendo usado.
-
 
 ## Funcionalidades
 
