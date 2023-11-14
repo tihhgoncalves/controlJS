@@ -1,8 +1,11 @@
 class rhinoJS {
-  constructor() {
+  constructor(data) {
     this.version = "%VERSION%";
-    this.data = {};
+    this.data = data;
     this.watchCallbacks = {};
+
+    // ativa monitores
+    this.monitorRShow(); // [r-show]
   }
 
   prepare(prop) {
@@ -34,8 +37,24 @@ class rhinoJS {
     };
   }
 
+  getPropByPath(propPath) {
+    const parts = propPath.split(".");
+    let currentObj = this.data;
+
+    for (let part of parts) {
+      if (currentObj.hasOwnProperty(part)) {
+        currentObj = currentObj[part];
+      } else {
+        // Caso a propriedade não seja encontrada, retorna undefined
+        return undefined;
+      }
+    }
+
+    return currentObj;
+  }
+
   watch(props, callback) {
-    const originalData = this.data; // Armazena a referência original para this.data
+    const originalData = this.data;
 
     if (!Array.isArray(props)) {
       props = [props];
@@ -50,10 +69,9 @@ class rhinoJS {
       var value = objBase[prop];
 
       if (!this.watchCallbacks[propKey]) {
-        this.watchCallbacks[propKey] = []; // Inicializa um array para os callbacks da prop
+        this.watchCallbacks[propKey] = [];
       }
 
-      // Adiciona o callback ao array da propriedade
       this.watchCallbacks[propKey].push(callback);
 
       Object.defineProperty(objBase, prop, {
@@ -65,7 +83,6 @@ class rhinoJS {
             let oldValue = value;
             value = newValue;
 
-            // Chama todos os callbacks associados a esta propriedade
             this.watchCallbacks[propKey].forEach((cb) => {
               cb(newValue, oldValue);
             });
@@ -74,14 +91,13 @@ class rhinoJS {
       });
     });
 
-    this.data = originalData; // Restaura this.data para o valor original
+    this.data = originalData;
   }
 
   reactElement(selector, prop, dataKey, filter) {
     let element = document.querySelector(selector);
 
     let acao = (v) => {
-      // se tiver parâmetro de filtro, trata valor por ele antes
       if (filter) {
         v = filter(v);
       }
@@ -95,12 +111,10 @@ class rhinoJS {
       }
     };
 
-    // começa a monitorar alteração da variável pra replicar a ação
     this.watch(dataKey, (v) => {
       acao(v);
     });
 
-    //executa ação pela primeira vez
     const split = this.prepare(dataKey);
     const objBase = split.objBase;
     dataKey = split.prop;
@@ -108,7 +122,6 @@ class rhinoJS {
   }
 
   reactModel(selector, prop) {
-    //prepara campos multiniveis
     const propOriginal = prop;
     const prepare = this.prepare(prop);
     prop = prepare.prop;
@@ -116,27 +129,66 @@ class rhinoJS {
 
     const elements = document.querySelectorAll(selector);
 
-    if (elements.length > 1) {
-      console.warn(
-        `[rhinoJS] reactModel > Mais de um elemento foi encontrado com o selector indicado e isso pode comprometer o funcionamento desse recurso.`,
-        selector,
-        prop
-      );
-    }
-
     elements.forEach((element) => {
-      element.addEventListener("input", (event) => {
-        objBase[prop] = event.target.value;
+      const updateElement = () => {
+        if (element.tagName === "SELECT") {
+          element.value = objBase[prop];
+        } else {
+          element.value = objBase[prop];
+        }
+      };
+      console.log("TAGNAME", element.tagName);
+      console.log("ELEMENT", element.value);
+      if (element.tagName === "SELECT") {
+        element.addEventListener("change", (event) => {
+          console.log("EVENTO - CHANGE", event);
+          objBase[prop] = event.target.value;
+        });
+      } else if (element.tagName === "INPUT") {
+        element.addEventListener("input", (event) => {
+          console.log("EVENTO - INPUT", event);
+          objBase[prop] = event.target.value;
+        });
+      }
+
+      this.watch(propOriginal, () => {
+        updateElement();
       });
 
-      this.watch(propOriginal, (newValue) => {
-        element.value = newValue;
+      updateElement(); // Inicializa o valor do elemento
+    });
+  }
+
+  monitorRShow() {
+    const rShowElements = document.querySelectorAll("[r-show]");
+
+    rShowElements.forEach((element) => {
+
+      let dataKey = element.getAttribute("r-show");
+
+      let negate = false;
+
+      if (dataKey.startsWith("!")) {
+        negate = true;
+        dataKey = dataKey.substring(1);
+      }
+
+      const fncExec = (dataKey, element, negate) => {
+        let val = this.getPropByPath(dataKey);
+
+        if (negate) {
+          val = !val;
+        }
+
+        element.style.display = val ? "block" : "none";
+      };
+
+      this.watch(dataKey, () => {
+        fncExec(dataKey, element, negate);
       });
 
-      // Atualiza o valor do elemento com o valor da variável inicialmente
-      element.value = objBase[prop];
+      //executa na execução da página
+      fncExec(dataKey, element, negate);
     });
   }
 }
-
-const $rhino = new rhinoJS();
