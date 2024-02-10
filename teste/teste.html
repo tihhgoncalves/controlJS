@@ -35,7 +35,7 @@
     <!-- ViewPort -->
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
-    <script src="../src/rhino.js"></script>
+    <script src="../public/rhino.js"></script>
   </head>
   <body>
     <div class="container m-5">
@@ -68,17 +68,19 @@
             <label class="form-check-label" for="exampleCheck1"
               >Check me out</label
             >
-          </div>          
-          
+          </div>
+
           <div class="mb-3 form-check">
-          
-            <select class="form-select campo-teste" aria-label="Default select example">
-                <option selected>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            
+            <select
+              class="form-select campo-teste"
+              aria-label="Default select example"
+            >
+              <option selected>Open this select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+
             <label class="form-check-label" for="exampleCheck1"
               >Check me out</label
             >
@@ -89,18 +91,30 @@
     </div>
 
     <script>
-      $rhino.data = {
-        teste: "123",
-        filtros: {
-          empresaId: null,
-          unidadeId: null,
-          serieId: null,
-          turmaId: null,
-          alunoId: null,
+      const $rhino = new rhinoJS({
+        data: {
+          nome: null,
+          endereco: {
+            logradouro: "Rua Padre Antônio Dias",
+            numero: 49,
+          },
         },
-      };
-
-      $rhino.reactModel("input.campo-teste", "filtros.empresaId");
+        methods: {
+          teste() {
+            alert("oi!");
+          },
+        },
+        watch: {
+          nome(newVal, oldVal) {
+            console.log("[watch] nome alterado de", oldVal, "para", newVal);
+          },
+          "endereco.numero": function (newVal, oldVal) {
+            console.log(
+              `[watch] endereco.numero alterado de ${oldVal} para ${newVal}`
+            );
+          },
+        },
+      });
     </script>
   </body>
 </html>

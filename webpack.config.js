@@ -9,6 +9,9 @@ module.exports = [
     output: {
       filename: "rhino.js",
       path: path.resolve(__dirname, "public"),
+      library: 'RhinoJS',
+      libraryTarget: 'umd',
+      globalObject: 'this'
     },
     module: {
       rules: [
